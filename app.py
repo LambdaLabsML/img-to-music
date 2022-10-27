@@ -44,7 +44,7 @@ with gr.Blocks() as demo:
             <p style="margin-bottom: 10px; font-size: 94%">
             Sends an image in to <a href="https://huggingface.co/spaces/pharma/CLIP-Interrogator" target="_blank">CLIP Interrogator</a>
             to generate a text prompt which is then run through 
-            Mubert text-to-image to generate music from the input image!
+            Mubert text-to-music to generate music from the input image!
             </p>
         </div>""")
   with gr.Row():
