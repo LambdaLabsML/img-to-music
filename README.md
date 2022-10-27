@@ -1,6 +1,6 @@
 ---
 title: Img To Music
-emoji: 💻
+emoji: 🌅🎶
 colorFrom: green
 colorTo: purple
 sdk: gradio
