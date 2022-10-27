@@ -28,6 +28,25 @@ def get_music(prompt):
   return result
 
 with gr.Blocks() as demo:
+  gr.HTML("""<div style="text-align: center; max-width: 700px; margin: 0 auto;">
+            <div
+            style="
+                display: inline-flex;
+                align-items: center;
+                gap: 0.8rem;
+                font-size: 1.75rem;
+            "
+            >
+            <h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
+                Image to Music
+            </h1>
+            </div>
+            <p style="margin-bottom: 10px; font-size: 94%">
+            Sends an image in to <a href="https://huggingface.co/spaces/pharma/CLIP-Interrogator" target="_blank">CLIP Interrogator</a>
+            to generate a text prompt which is then run through 
+            Mubert text-to-image to generate music from the inout image ! ! 
+            </p>
+        </div>""")
   with gr.Row():
     with gr.Column():
       input_img = gr.Image(type="filepath")
