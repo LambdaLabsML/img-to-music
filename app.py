@@ -25,7 +25,7 @@ def get_music(prompt):
   print(result)
   #output = os.path.join(result)
   #print(output)
-  return prompt
+  return result
 
 with gr.Blocks() as demo:
   with gr.Row():
