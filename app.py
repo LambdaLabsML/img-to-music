@@ -21,6 +21,6 @@ with gr.Blocks() as demo:
       generate = gr.Button("Generate Music from Image")
     with gr.Column():
       music_output = gr.Audio(label="Result")
-  generate.click(get_prompts, inputs=[input_img], outputs=[music_output]
+  generate.click(get_prompts, inputs=[input_img], outputs=[music_output])
 
 demo.launch()
