@@ -7,16 +7,17 @@ def get_prompts(uploaded_image):
   prompt = img_to_text(uploaded_image, fn_index=1)[0]
   print(prompt)
   music_result = get_music(prompt)
-  print(f"""——————
-  {music_result}
-  """)
+  
   return music_result
 
 def get_music(prompt):
   email = "blabla@mail.com"
   duration = 30
   result = text_to_music(email, prompt, duration)[0]
-  return result
+  print(f"""——————
+  {result}
+  """)
+  return None
 
 with gr.Blocks() as demo:
   with gr.Row():
