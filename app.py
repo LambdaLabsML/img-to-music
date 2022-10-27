@@ -21,7 +21,7 @@ def get_prompts(uploaded_image):
 
 def get_music(prompt):
   print("calling now mubert ....")
-  result = text_to_music(prompt, fn_index=1)[0]
+  result = text_to_music(prompt, fn_index=1)
   print(result)
   #output = os.path.join(result)
   #print(output)
