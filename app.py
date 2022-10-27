@@ -23,7 +23,7 @@ def get_music(prompt):
   print("calling now mubert ....")
   email = "blabla@mail.com"
   duration = 30
-  #result = text_to_music(email, prompt, duration)
+  result = text_to_music(email, prompt, duration)[0]
   
   #output = os.path.join(result)
   #print(output)
