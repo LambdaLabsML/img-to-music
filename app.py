@@ -15,7 +15,7 @@ def get_prompts(uploaded_image):
 def get_music(prompt):
   email = "blabla@mail.com"
   duration = 30
-  result = text_to_music(email, prompt, duration)
+  result = text_to_music([email, prompt, duration], fn_index=1)
   print(f"""——————
   {result}
   """)
