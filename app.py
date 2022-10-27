@@ -10,17 +10,16 @@ def get_prompts(uploaded_image):
   
   music_result = get_music(prompt)
   
-  return prompt
+  return music_result
 
 def get_music(prompt):
   email = "blabla@mail.com"
   duration = 30
   result = text_to_music(email, prompt, duration)
-  print(f"""——————
-  {result}
-  """)
-  #output = os.path.join(result, image)
-  return result
+  
+  output = os.path.join(result)
+  print(output)
+  return prompt
 
 with gr.Blocks() as demo:
   with gr.Row():
