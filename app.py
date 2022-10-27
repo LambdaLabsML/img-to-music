@@ -10,12 +10,12 @@ def get_prompts(uploaded_image):
   
   music_result = get_music(prompt)
   
-  return music_result
+  return prompt
 
 def get_music(prompt):
   email = "blabla@mail.com"
   duration = 30
-  result = text_to_music([email, prompt, duration], fn_index=1)
+  result = text_to_music(email, prompt, duration)
   print(f"""——————
   {result}
   """)
@@ -28,7 +28,7 @@ with gr.Blocks() as demo:
       input_img = gr.Image(type="filepath")
       generate = gr.Button("Generate Music from Image")
     with gr.Column():
-      music_output = gr.Audio(label="Result")
+      music_output = gr.Textbox(label="Result")
   generate.click(get_prompts, inputs=[input_img], outputs=[music_output])
 
 demo.launch()
