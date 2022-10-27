@@ -2,7 +2,7 @@ import gradio as gr
 import os
 
 img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
-text_to_music = gr.Interface.load("spaces/Mubert/Text-to-Music")
+text_to_music = gr.Interface.load("spaces/fffiloni/text-2-music")
 
 def get_prompts(uploaded_image):
   print("calling Clip interrogator ...")
@@ -21,10 +21,8 @@ def get_prompts(uploaded_image):
 
 def get_music(prompt):
   print("calling now mubert ....")
-  email = "blabla@mail.com"
-  duration = 30
-  result = text_to_music(email, prompt, duration)[0]
-  
+  result = text_to_music(prompt)[0]
+  print(result)
   #output = os.path.join(result)
   #print(output)
   return prompt
