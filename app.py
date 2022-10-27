@@ -1,7 +1,7 @@
 import gradio as gr
 import os
 
-img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
+#img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
 text_to_music = gr.Interface.load("spaces/fffiloni/text-2-music")
 
 def get_prompts(uploaded_image):
