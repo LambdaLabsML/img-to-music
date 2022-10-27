@@ -1,14 +1,14 @@
 import gradio as gr
 import os
 
-#img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
+img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
 text_to_music = gr.Interface.load("spaces/fffiloni/text-2-music")
 
 def get_prompts(uploaded_image):
   print("calling Clip interrogator ...")
   
-  #prompt = img_to_text(uploaded_image, fn_index=1)[0]
-  prompt = "trying to find the right method index"
+  prompt = img_to_text(uploaded_image, fn_index=1)[0]
+  #prompt = "trying to find the right method index"
   print(f"""———
   Got prompt result:
   {prompt}
