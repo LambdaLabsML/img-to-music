@@ -20,7 +20,11 @@ def get_prompts(uploaded_image):
   return music_result
 
 def get_music(prompt):
-  print("calling now mubert ....")
+  print(f"""———
+  Calling now mubertAI with the prompt:
+  {prompt}
+  ———————
+  """)
   result = text_to_music(prompt, fn_index=0)
   print(result)
   return result
