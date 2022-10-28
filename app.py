@@ -53,4 +53,4 @@ with gr.Blocks() as demo:
       music_output = gr.Audio(label="Result", type="filepath")
   generate.click(get_prompts, inputs=[input_img], outputs=[music_output])
 
-demo.queue(max_size=32).launch()
+demo.queue(max_size=32, concurrency_count=20).launch()
