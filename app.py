@@ -8,7 +8,7 @@ def get_prompts(uploaded_image):
   print("calling Clip interrogator ...")
   
   prompt = img_to_text(uploaded_image, fn_index=1)[0]
-  #prompt = "trying to find the right method index"
+ 
   print(f"""———
   Got prompt result:
   {prompt}
@@ -23,8 +23,6 @@ def get_music(prompt):
   print("calling now mubert ....")
   result = text_to_music(prompt, fn_index=0)
   print(result)
-  #output = os.path.join(result)
-  #print(output)
   return result
 
 with gr.Blocks() as demo:
@@ -55,4 +53,4 @@ with gr.Blocks() as demo:
       music_output = gr.Audio(label="Result", type="filepath")
   generate.click(get_prompts, inputs=[input_img], outputs=[music_output])
 
-demo.launch()
+demo.queue(max_size=32).launch()
