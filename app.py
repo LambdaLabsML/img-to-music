@@ -32,7 +32,7 @@ def get_music(prompt):
   ———————
   """)
   
-  return result
+  return result, result
 
 css = """
 #col-container {max-width: 700px; margin-left: auto; margin-right: auto;}
@@ -62,10 +62,11 @@ with gr.Blocks(css=css) as demo:
           </div>""")
     
     with gr.Column():
-      input_img = gr.Image(type="filepath")
+      input_img = gr.Image(type="filepath", elem_id="input-img")
       generate = gr.Button("Generate Music from Image")
     with gr.Column():
       music_output = gr.Audio(label="Result", type="filepath")
-  generate.click(get_prompts, inputs=[input_img], outputs=[music_output])
+      output_text = gr.Textbox(label="Output", elem_id="output-txt", visible=False)
+  generate.click(get_prompts, inputs=[input_img], outputs=[music_output, output_text])
 
 demo.queue(max_size=32, concurrency_count=20).launch()
