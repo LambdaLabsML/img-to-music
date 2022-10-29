@@ -72,6 +72,6 @@ with gr.Blocks(css=css) as demo:
     #  loading_icon = gr.HTML(loading_icon_html, visible=False)
     #  share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
       
-  generate.click(get_prompts, inputs=[input_img], outputs=[music_output, output_text])
+  generate.click(get_prompts, inputs=[input_img], outputs=[music_output])
 
 demo.queue(max_size=32, concurrency_count=20).launch()
