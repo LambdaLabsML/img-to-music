@@ -61,12 +61,17 @@ with gr.Blocks(css=css) as demo:
               </p>
           </div>""")
     
-    with gr.Column():
-      input_img = gr.Image(type="filepath", elem_id="input-img")
-      generate = gr.Button("Generate Music from Image")
-    with gr.Column():
-      music_output = gr.Audio(label="Result", type="filepath")
-      output_text = gr.Textbox(label="Output", elem_id="output-txt", visible=False)
+    
+    input_img = gr.Image(type="filepath", elem_id="input-img")
+    generate = gr.Button("Generate Music from Image")
+  
+    music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
+    
+    with gr.Group(elem_id="share-btn-container"):
+      community_icon = gr.HTML(community_icon_html, visible=False)
+      loading_icon = gr.HTML(loading_icon_html, visible=False)
+      share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
+      
   generate.click(get_prompts, inputs=[input_img], outputs=[music_output, output_text])
 
 demo.queue(max_size=32, concurrency_count=20).launch()
