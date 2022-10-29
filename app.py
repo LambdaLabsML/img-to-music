@@ -5,51 +5,62 @@ img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
 text_to_music = gr.Interface.load("spaces/fffiloni/text-2-music")
 
 def get_prompts(uploaded_image):
-  print("calling Clip interrogator ...")
+  
+  print(f"""—————
+  Calling CLIP Interrogator ...
+  """)
   
   prompt = img_to_text(uploaded_image, fn_index=1)[0]
- 
-  print(f"""———
-  Got prompt result:
-  {prompt}
-  ———————
-  """)
   
   music_result = get_music(prompt)
   
   return music_result
 
 def get_music(prompt):
-  print(f"""———
-  Calling now mubertAI with the prompt:
-  {prompt}
+  
+  print(f"""—————
+  Calling now MubertAI ...
   ———————
   """)
+  
   result = text_to_music(prompt, fn_index=0)
-  print(result)
+  
+  print(f"""—————
+  NEW RESULTS
+  prompt : {prompt}
+  music : {result}
+  ———————
+  """)
+  
   return result
 
-with gr.Blocks() as demo:
-  gr.HTML("""<div style="text-align: center; max-width: 700px; margin: 0 auto;">
-            <div
-            style="
-                display: inline-flex;
-                align-items: center;
-                gap: 0.8rem;
-                font-size: 1.75rem;
-            "
-            >
-            <h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
-                Image to Music
-            </h1>
-            </div>
-            <p style="margin-bottom: 10px; font-size: 94%">
-            Sends an image in to <a href="https://huggingface.co/spaces/pharma/CLIP-Interrogator" target="_blank">CLIP Interrogator</a>
-            to generate a text prompt which is then run through 
-            Mubert text-to-music to generate music from the input image!
-            </p>
-        </div>""")
-  with gr.Row():
+css = """
+#col-container {max-width: 700px; margin-left: auto; margin-right: auto;}
+a {text-decoration-line: underline; font-weight: 600;}
+"""
+
+with gr.Blocks(css=css) as demo:
+  with gr.Column(elem_id="col-container"):
+    gr.HTML("""<div style="text-align: center; max-width: 700px; margin: 0 auto;">
+              <div
+              style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 0.8rem;
+                  font-size: 1.75rem;
+              "
+              >
+              <h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
+                  Image to Music
+              </h1>
+              </div>
+              <p style="margin-bottom: 10px; font-size: 94%">
+              Sends an image in to <a href="https://huggingface.co/spaces/pharma/CLIP-Interrogator" target="_blank">CLIP Interrogator</a>
+              to generate a text prompt which is then run through 
+              <a href="https://huggingface.co/Mubert" target="_blank">Mubert</a> text-to-music to generate music from the input image!
+              </p>
+          </div>""")
+    
     with gr.Column():
       input_img = gr.Image(type="filepath")
       generate = gr.Button("Generate Music from Image")
