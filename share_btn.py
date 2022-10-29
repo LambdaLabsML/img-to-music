@@ -80,7 +80,9 @@ share_js = """async () => {
     
     const descriptionMd = `#### Input img:
 <img src='${urlInputImg}' style='max-height: 350px;'>
+
 #### Music:
+
 <audio controls>
   <source src="${dataOutputMusic}" type="audio/wav">
 Your browser does not support the audio element.
