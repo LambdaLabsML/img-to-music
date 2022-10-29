@@ -32,7 +32,7 @@ def get_music(prompt):
   ———————
   """)
   
-  return result, result
+  return result
 
 css = """
 #col-container {max-width: 700px; margin-left: auto; margin-right: auto;}
