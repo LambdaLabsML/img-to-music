@@ -1,14 +1,17 @@
 import gradio as gr
 import os
+import requests
+import urllib
+
+from os import path
+from pydub import AudioSegment
 
 img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
 text_to_music = gr.Interface.load("spaces/fffiloni/text-2-music")
 
+from share_btn import community_icon_html, loading_icon_html, share_js
+
 def get_prompts(uploaded_image):
-  
-  print(f"""—————
-  Calling CLIP Interrogator ...
-  """)
   
   prompt = img_to_text(uploaded_image, fn_index=1)[0]
   
@@ -17,11 +20,6 @@ def get_prompts(uploaded_image):
   return music_result
 
 def get_music(prompt):
-  
-  print(f"""—————
-  Calling now MubertAI ...
-  ———————
-  """)
   
   result = text_to_music(prompt, fn_index=0)
   
@@ -32,11 +30,52 @@ def get_music(prompt):
   ———————
   """)
   
-  return result
+  url = result
+  save_as = "file.mp3"
+  
+  data = urllib.request.urlopen(url)
+
+  f = open(save_as,'wb')
+  f.write(data.read())
+  f.close()
+  
+  wave_file="file.wav"
+  
+  sound = AudioSegment.from_mp3(save_as)
+  sound.export(wave_file, format="wav")
+  
+  return wave_file, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 css = """
 #col-container {max-width: 700px; margin-left: auto; margin-right: auto;}
 a {text-decoration-line: underline; font-weight: 600;}
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+#share-btn-container {
+    display: flex; padding-left: 0.5rem !important; padding-right: 0.5rem !important; background-color: #000000; justify-content: center; align-items: center; border-radius: 9999px !important; width: 13rem;
+}
+#share-btn {
+    all: initial; color: #ffffff;font-weight: 600; cursor:pointer; font-family: 'IBM Plex Sans', sans-serif; margin-left: 0.5rem !important; padding-top: 0.25rem !important; padding-bottom: 0.25rem !important;
+}
+#share-btn * {
+    all: unset;
+}
+#share-btn-container div:nth-child(-n+2){
+    width: auto !important;
+    min-height: 0px !important;
+}
+#share-btn-container .wrap {
+    display: none !important;
+}
 """
 
 with gr.Blocks(css=css) as demo:
@@ -67,11 +106,12 @@ with gr.Blocks(css=css) as demo:
   
     music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
     
-    #with gr.Group(elem_id="share-btn-container"):
-    #  community_icon = gr.HTML(community_icon_html, visible=False)
-    #  loading_icon = gr.HTML(loading_icon_html, visible=False)
-    #  share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
+    with gr.Group(elem_id="share-btn-container"):
+      community_icon = gr.HTML(community_icon_html, visible=False)
+      loading_icon = gr.HTML(loading_icon_html, visible=False)
+      share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
       
-  generate.click(get_prompts, inputs=[input_img], outputs=[music_output])
+  generate.click(get_prompts, inputs=[input_img], outputs=[music_output, share_button, community_icon, loading_icon])
+  share_button.click(None, [], [], _js=share_js)
 
 demo.queue(max_size=32, concurrency_count=20).launch()
