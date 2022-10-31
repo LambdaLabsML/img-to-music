@@ -60,10 +60,10 @@ share_js = """async () => {
     const outputMusic = gradioEl.querySelector('#music-output audio');
     const outputMusic_src = gradioEl.querySelector('#music-output audio').src;
     const outputMusic_name = outputMusic_src.split('/').pop();
-    let titleTxt = outputMusic_name;
-    if(titleTxt.length > 100){
-        titleTxt = titleTxt.slice(0, 100) + ' ...';
-    }
+    let titleTxt = outputMusic_name + ' *Do not forget to name your combo with a great title :) ';
+    //if(titleTxt.length > 100){
+    //    titleTxt = titleTxt.slice(0, 100) + ' ...';
+    //}
     const shareBtnEl = gradioEl.querySelector('#share-btn');
     const shareIconEl = gradioEl.querySelector('#share-btn-share-icon');
     const loadingIconEl = gradioEl.querySelector('#share-btn-loading-icon');
