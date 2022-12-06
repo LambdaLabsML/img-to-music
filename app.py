@@ -13,7 +13,7 @@ from share_btn import community_icon_html, loading_icon_html, share_js
 
 def get_prompts(uploaded_image):
   
-  prompt = img_to_text(uploaded_image, fn_index=1)[0]
+  prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
   
   music_result = get_music(prompt)
   
