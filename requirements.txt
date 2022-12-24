@@ -1,3 +1,8 @@
+httpx
+sentence-transformers
+ffmpeg
+audio2numpy
+
 pydub
 ffmpeg
 requests

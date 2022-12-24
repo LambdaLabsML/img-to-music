@@ -1,4 +1,11 @@
+import time
+import base64
 import gradio as gr
+from sentence_transformers import SentenceTransformer
+
+import httpx
+import json
+
 import os
 import requests
 import urllib
@@ -7,7 +14,6 @@ from os import path
 from pydub import AudioSegment
 
 img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
-text_to_music = gr.Interface.load("spaces/fffiloni/text-2-music")
 
 from share_btn import community_icon_html, loading_icon_html, share_js
 
@@ -15,22 +21,59 @@ def get_prompts(uploaded_image):
   
   prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
   
-  music_result = get_music(prompt)
+  music_result = generate_track_by_prompt(prompt, duration, gen_intensity, audio_format)
   
-  return music_result
+  return music_result[0], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
-def get_music(prompt):
-  
-  result = text_to_music(prompt, fn_index=0)
-  
-  print(f"""—————
-  NEW RESULTS
-  prompt : {prompt}
-  music : {result}
-  ———————
-  """)
-  
-  url = result
+from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
+
+minilm = SentenceTransformer('all-MiniLM-L6-v2')
+mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
+
+
+def get_track_by_tags(tags, pat, duration, gen_intensity, maxit=20, loop=False):
+    if loop:
+        mode = "loop"
+    else:
+        mode = "track"
+    r = httpx.post('https://api-b2b.mubert.com/v2/RecordTrackTTM',
+                   json={
+                       "method": "RecordTrackTTM",
+                       "params": {
+                           "pat": pat,
+                           "duration": duration,
+                           "format": "wav",
+                           "intensity":gen_intensity,
+                           "tags": tags,
+                           "mode": mode
+                       }
+                   })
+
+    rdata = json.loads(r.text)
+    assert rdata['status'] == 1, rdata['error']['text']
+    trackurl = rdata['data']['tasks'][0]['download_link']
+
+    print('Generating track ', end='')
+    for i in range(maxit):
+        r = httpx.get(trackurl)
+        if r.status_code == 200:
+            return trackurl
+        time.sleep(1)
+
+
+def generate_track_by_prompt(prompt, duration, gen_intensity):
+    try:
+        pat = get_pat("prodia@prodia.com")
+        _, tags = get_tags_for_prompts(minilm, mubert_tags_embeddings, [prompt, ])[0]
+        result = get_track_by_tags(tags, pat, int(duration), gen_intensity, loop=False)
+        print(result)
+        return result, ",".join(tags), "Success"
+    except Exception as e:
+        return None, "", str(e)
+
+def convert_mp3_to_wav(mp3_filepath):
+ 
+  url = mp3_filepath
   save_as = "file.mp3"
   
   data = urllib.request.urlopen(url)
@@ -44,7 +87,7 @@ def get_music(prompt):
   sound = AudioSegment.from_mp3(save_as)
   sound.export(wave_file, format="wav")
   
-  return wave_file, gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
+  return wave_file
 
 css = """
 #col-container {max-width: 700px; margin-left: auto; margin-right: auto;}
@@ -79,39 +122,42 @@ a {text-decoration-line: underline; font-weight: 600;}
 """
 
 with gr.Blocks(css=css) as demo:
-  with gr.Column(elem_id="col-container"):
-    gr.HTML("""<div style="text-align: center; max-width: 700px; margin: 0 auto;">
-              <div
-              style="
-                  display: inline-flex;
-                  align-items: center;
-                  gap: 0.8rem;
-                  font-size: 1.75rem;
-              "
-              >
-              <h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
-                  Image to Music
-              </h1>
-              </div>
-              <p style="margin-bottom: 10px; font-size: 94%">
-              Sends an image in to <a href="https://huggingface.co/spaces/pharma/CLIP-Interrogator" target="_blank">CLIP Interrogator</a>
-              to generate a text prompt which is then run through 
-              <a href="https://huggingface.co/Mubert" target="_blank">Mubert</a> text-to-music to generate music from the input image!
-              </p>
-          </div>""")
+    with gr.Column(elem_id="col-container"):
+        gr.HTML("""<div style="text-align: center; max-width: 700px; margin: 0 auto;">
+                <div
+                style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.8rem;
+                    font-size: 1.75rem;
+                "
+                >
+                <h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
+                    Image to Music
+                </h1>
+                </div>
+                <p style="margin-bottom: 10px; font-size: 94%">
+                Sends an image in to <a href="https://huggingface.co/spaces/pharma/CLIP-Interrogator" target="_blank">CLIP Interrogator</a>
+                to generate a text prompt which is then run through 
+                <a href="https://huggingface.co/Mubert" target="_blank">Mubert</a> text-to-music to generate music from the input image!
+                </p>
+            </div>""")
     
     
     input_img = gr.Image(type="filepath", elem_id="input-img")
+    with gr.Row():
+        track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
+        gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="high", label="Complexity")
     generate = gr.Button("Generate Music from Image")
   
     music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
     
     with gr.Group(elem_id="share-btn-container"):
-      community_icon = gr.HTML(community_icon_html, visible=False)
-      loading_icon = gr.HTML(loading_icon_html, visible=False)
-      share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
+        community_icon = gr.HTML(community_icon_html, visible=False)
+        loading_icon = gr.HTML(loading_icon_html, visible=False)
+        share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
       
-  generate.click(get_prompts, inputs=[input_img], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
-  share_button.click(None, [], [], _js=share_js)
+    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
+    share_button.click(None, [], [], _js=share_js)
 
 demo.queue(max_size=32, concurrency_count=20).launch()
