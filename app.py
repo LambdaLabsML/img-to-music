@@ -18,11 +18,11 @@ img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
 from share_btn import community_icon_html, loading_icon_html, share_js
 
 def get_prompts(uploaded_image, track_duration, gen_intensity):
-  
+  print("calling clip interrogator")
   prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
-  
+  print(prompt)
   music_result = generate_track_by_prompt(prompt, track_duration, gen_intensity)
-  
+  print(music_result)
   return music_result[0], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
 from utils import get_tags_for_prompts, get_mubert_tags_embeddings, get_pat
@@ -90,7 +90,7 @@ def convert_mp3_to_wav(mp3_filepath):
   return wave_file
 
 css = """
-#col-container {max-width: 550px; margin-left: auto; margin-right: auto;}
+#col-container {max-width: 580px; margin-left: auto; margin-right: auto;}
 a {text-decoration-line: underline; font-weight: 600;}
 .footer {
         margin-bottom: 45px;
@@ -177,7 +177,7 @@ with gr.Blocks(css=css) as demo:
         input_img = gr.Image(type="filepath", elem_id="input-img")
         with gr.Row():
             track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
-            gen_intensity = gr.Radio(choices=["low", "medium", "high"], value="high", label="Complexity", show_label=False)
+            gen_intensity = gr.Radio(choices=["low", "medium", "high"], value="high", label="Complexity")
         generate = gr.Button("Generate Music from Image")
     
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
