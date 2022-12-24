@@ -17,11 +17,11 @@ img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
 
 from share_btn import community_icon_html, loading_icon_html, share_js
 
-def get_prompts(uploaded_image):
+def get_prompts(uploaded_image, track_duration, gen_intensity):
   
   prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
   
-  music_result = generate_track_by_prompt(prompt, duration, gen_intensity, audio_format)
+  music_result = generate_track_by_prompt(prompt, track_duration, gen_intensity)
   
   return music_result[0], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
