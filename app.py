@@ -13,13 +13,15 @@ import urllib
 from os import path
 from pydub import AudioSegment
 
-img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
+#img_to_text = gr.Blocks.load(name="spaces/pharma/CLIP-Interrogator")
+img_to_text = gr.Blocks.load(name="spaces/fffiloni/CLIP-Interrogator-2")
 
 from share_btn import community_icon_html, loading_icon_html, share_js
 
 def get_prompts(uploaded_image, track_duration, gen_intensity):
   print("calling clip interrogator")
-  prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
+  #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
+  img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
   music_result = generate_track_by_prompt(prompt, track_duration, gen_intensity)
   print(music_result)
