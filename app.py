@@ -92,6 +92,25 @@ def convert_mp3_to_wav(mp3_filepath):
 css = """
 #col-container {max-width: 550px; margin-left: auto; margin-right: auto;}
 a {text-decoration-line: underline; font-weight: 600;}
+.footer {
+        margin-bottom: 45px;
+        margin-top: 10px;
+        text-align: center;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    .footer>p {
+        font-size: .8rem;
+        display: inline-block;
+        padding: 0 10px;
+        transform: translateY(10px);
+        background: white;
+    }
+    .dark .footer {
+        border-color: #303030;
+    }
+    .dark .footer>p {
+        background: #0b0f19;
+    }
 .animate-spin {
     animation: spin 1s linear infinite;
 }
@@ -121,6 +140,17 @@ a {text-decoration-line: underline; font-weight: 600;}
 }
 """
 
+article = """
+    
+    <div class="footer">
+        <p>
+         
+        Demo by 🤗 <a href="https://twitter.com/fffiloni" target="_blank">Sylvain Filoni</a>
+        </p>
+    </div>
+    
+"""
+
 with gr.Blocks(css=css) as demo:
     with gr.Column(elem_id="col-container"):
         gr.HTML("""<div style="text-align: center; max-width: 700px; margin: 0 auto;">
@@ -147,7 +177,7 @@ with gr.Blocks(css=css) as demo:
         input_img = gr.Image(type="filepath", elem_id="input-img")
         with gr.Row():
             track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
-            gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="high", label="Complexity", show_label=False)
+            gen_intensity = gr.Radio(choices=["low", "medium", "high"], value="high", label="Complexity", show_label=False)
         generate = gr.Button("Generate Music from Image")
     
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
@@ -156,7 +186,8 @@ with gr.Blocks(css=css) as demo:
             community_icon = gr.HTML(community_icon_html, visible=False)
             loading_icon = gr.HTML(loading_icon_html, visible=False)
             share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
-      
+
+        gr.HTML(article)
     generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
