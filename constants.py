@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-MUBERT_LICENCE = os.environ.get('MUBERT_LICENCE')
+MUBERT_LICENSE = os.environ.get('MUBERT_LICENSE')
 MUBERT_TOKEN = os.environ.get('MUBERT_TOKEN')
 
 MUBERT_MODE = "loop"

@@ -3,7 +3,7 @@ import numpy as np
 import httpx
 import os
 
-from constants import MUBERT_TAGS, MUBERT_MODE, MUBERT_LICENCE, MUBERT_TOKEN
+from constants import MUBERT_TAGS, MUBERT_MODE, MUBERT_LICENSE, MUBERT_TOKEN
 
 def get_mubert_tags_embeddings(w2v_model):
     return w2v_model.encode(MUBERT_TAGS)
@@ -15,7 +15,7 @@ def get_pat(email: str):
                        "method": "GetServiceAccess",
                        "params": {
                            "email": email,
-                           "license": MUBERT_LICENCE,
+                           "license": MUBERT_LICENSE,
                            "token": MUBERT_TOKEN,
                            "mode": MUBERT_MODE,
                        }
