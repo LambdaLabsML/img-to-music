@@ -178,7 +178,7 @@ with gr.Blocks(css=css) as demo:
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
         with gr.Row():
-            track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
+            track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="🎅 Track duration", elem_id="duration-inp")
             gen_intensity = gr.Radio(choices=["low", "medium", "high"], value="high", label="Complexity")
         generate = gr.Button("Generate Music from Image")
     
