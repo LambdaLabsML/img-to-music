@@ -90,7 +90,7 @@ def convert_mp3_to_wav(mp3_filepath):
   return wave_file
 
 css = """
-#col-container {max-width: 700px; margin-left: auto; margin-right: auto;}
+#col-container {max-width: 550px; margin-left: auto; margin-right: auto;}
 a {text-decoration-line: underline; font-weight: 600;}
 .animate-spin {
     animation: spin 1s linear infinite;
@@ -144,18 +144,18 @@ with gr.Blocks(css=css) as demo:
             </div>""")
     
     
-    input_img = gr.Image(type="filepath", elem_id="input-img")
-    with gr.Row():
-        track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
-        gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="high", label="Complexity")
-    generate = gr.Button("Generate Music from Image")
-  
-    music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
+        input_img = gr.Image(type="filepath", elem_id="input-img")
+        with gr.Row():
+            track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
+            gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="high", label="Complexity", show_label=False)
+        generate = gr.Button("Generate Music from Image")
     
-    with gr.Group(elem_id="share-btn-container"):
-        community_icon = gr.HTML(community_icon_html, visible=False)
-        loading_icon = gr.HTML(loading_icon_html, visible=False)
-        share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
+        music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
+        
+        with gr.Group(elem_id="share-btn-container"):
+            community_icon = gr.HTML(community_icon_html, visible=False)
+            loading_icon = gr.HTML(loading_icon_html, visible=False)
+            share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
       
     generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
