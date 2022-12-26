@@ -144,7 +144,7 @@ article = """
     <div class="footer">
         <p>
          
-        Demo by 🤗 <a href="https://twitter.com/fffiloni" target="_blank">Sylvain Filoni</a>
+        Follow <a href="https://twitter.com/fffiloni" target="_blank">Sylvain Filoni</a> for future updates 🤗
         </p>
     </div>
     
