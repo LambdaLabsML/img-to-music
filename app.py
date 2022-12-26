@@ -18,12 +18,12 @@ img_to_text = gr.Blocks.load(name="spaces/fffiloni/CLIP-Interrogator-2")
 
 from share_btn import community_icon_html, loading_icon_html, share_js
 
-def get_prompts(uploaded_image, track_duration, gen_intensity):
+def get_prompts(uploaded_image, track_duration, gen_intensity, gen_mode):
   print("calling clip interrogator")
   #prompt = img_to_text(uploaded_image, "ViT-L (best for Stable Diffusion 1.*)", "fast", fn_index=1)[0]
   prompt = img_to_text(uploaded_image, 'fast', 4, fn_index=1)[0]
   print(prompt)
-  music_result = generate_track_by_prompt(prompt, track_duration, gen_intensity)
+  music_result = generate_track_by_prompt(prompt, track_duration, gen_intensity, gen_mode)
   print(music_result)
   return music_result[0], gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
 
@@ -33,11 +33,8 @@ minilm = SentenceTransformer('all-MiniLM-L6-v2')
 mubert_tags_embeddings = get_mubert_tags_embeddings(minilm)
 
 
-def get_track_by_tags(tags, pat, duration, gen_intensity, maxit=20, loop=False):
-    if loop:
-        mode = "loop"
-    else:
-        mode = "track"
+def get_track_by_tags(tags, pat, duration, gen_intensity, gen_mode, maxit=20):
+    
     r = httpx.post('https://api-b2b.mubert.com/v2/RecordTrackTTM',
                    json={
                        "method": "RecordTrackTTM",
@@ -47,7 +44,7 @@ def get_track_by_tags(tags, pat, duration, gen_intensity, maxit=20, loop=False):
                            "format": "wav",
                            "intensity":gen_intensity,
                            "tags": tags,
-                           "mode": mode
+                           "mode": gen_mode
                        }
                    })
 
@@ -63,11 +60,11 @@ def get_track_by_tags(tags, pat, duration, gen_intensity, maxit=20, loop=False):
         time.sleep(1)
 
 
-def generate_track_by_prompt(prompt, duration, gen_intensity):
+def generate_track_by_prompt(prompt, duration, gen_intensity, gen_mode):
     try:
         pat = get_pat("prodia@prodia.com")
         _, tags = get_tags_for_prompts(minilm, mubert_tags_embeddings, [prompt, ])[0]
-        result = get_track_by_tags(tags, pat, int(duration), gen_intensity, loop=False)
+        result = get_track_by_tags(tags, pat, int(duration), gen_intensity, gen_mode)
         print(result)
         return result, ",".join(tags), "Success"
     except Exception as e:
@@ -179,7 +176,8 @@ with gr.Blocks(css=css) as demo:
         input_img = gr.Image(type="filepath", elem_id="input-img")
         with gr.Row():
             track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="🎅 Track duration", elem_id="duration-inp")
-            gen_intensity = gr.Radio(choices=["low", "medium", "high"], value="high", label="Complexity")
+            gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="high", label="Complexity")
+            gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="track")
         generate = gr.Button("Generate Music from Image")
     
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
@@ -190,7 +188,7 @@ with gr.Blocks(css=css) as demo:
             share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
 
         gr.HTML(article)
-    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
+    generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
 demo.queue(max_size=32, concurrency_count=20).launch()
