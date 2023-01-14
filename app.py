@@ -150,7 +150,7 @@ article = """
     
 """
 
-with gr.Blocks(css=css) as demo:
+with gr.Blocks(css="style.css") as demo:
     with gr.Column(elem_id="col-container"):
         gr.HTML("""<div style="text-align: center; max-width: 700px; margin: 0 auto;">
                 <div
