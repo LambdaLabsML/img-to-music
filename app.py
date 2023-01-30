@@ -96,6 +96,16 @@ article = """
         Follow <a href="https://twitter.com/fffiloni" target="_blank">Sylvain Filoni</a> for future updates 🤗
         </p>
     </div>
+
+    <div id="may-like" style="display:flex; align-items:center; justify-content: center;height:20px;">
+    <p>You may also like: </p>
+    <svg height="20px" style="margin-left:4px">       
+         <a href="https://huggingface.co/spaces/fffiloni/spectrogram-to-music" target="_blank">
+            <image href="https://img.shields.io/badge/🤗 Spaces-Riffusion-blue" src="https://img.shields.io/badge/🤗 Spaces-Riffusion-blue.png" height="20"/>
+         </a>
+    </svg>
+</div>
+
     
 """
 
