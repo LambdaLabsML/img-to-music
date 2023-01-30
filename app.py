@@ -130,7 +130,7 @@ with gr.Blocks(css="style.css") as demo:
             loading_icon = gr.HTML(loading_icon_html, visible=False)
             share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
 
-        with gr.Accordion(label="Music Generation Options", open=False)
+        with gr.Accordion(label="Music Generation Options", open=False):
             track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
             with gr.Row():
                 gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
