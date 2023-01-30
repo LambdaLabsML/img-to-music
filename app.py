@@ -174,13 +174,12 @@ with gr.Blocks(css="style.css") as demo:
     
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
+        music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
         track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
         with gr.Row():
             gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
             gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="track")
         generate = gr.Button("Generate Music from Image")
-    
-        music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
         
         with gr.Group(elem_id="share-btn-container"):
             community_icon = gr.HTML(community_icon_html, visible=False)
