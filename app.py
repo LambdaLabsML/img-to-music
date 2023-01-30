@@ -100,7 +100,6 @@ article = """
     <div id="may-like-container" style="display: flex;justify-content: center;flex-direction: column;align-items: center;">
         <p>You may also like: </p>
         <div id="may-like" style="display:flex; align-items:center; justify-content: center;height:20px;">
-            <p>You may also like: </p>
             <svg height="20" width="120" style="margin-left:4px">       
                  <a href="https://huggingface.co/spaces/fffiloni/spectrogram-to-music" target="_blank">
                     <image href="https://img.shields.io/badge/🤗 Spaces-Riffusion-blue" src="https://img.shields.io/badge/🤗 Spaces-Riffusion-blue.png" height="20"/>
