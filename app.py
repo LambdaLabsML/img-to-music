@@ -101,6 +101,7 @@ article = """
 
 with gr.Blocks(css="style.css") as demo:
     with gr.Column(elem_id="col-container"):
+        
         gr.HTML("""<div style="text-align: center; max-width: 700px; margin: 0 auto;">
                 <div
                 style="
@@ -121,7 +122,6 @@ with gr.Blocks(css="style.css") as demo:
                 </p>
             </div>""")
     
-    
         input_img = gr.Image(type="filepath", elem_id="input-img")
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output").style(height="5rem")
         
@@ -131,13 +131,15 @@ with gr.Blocks(css="style.css") as demo:
             share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
 
         with gr.Accordion(label="Music Generation Options", open=False)
-        track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
-        with gr.Row():
-            gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
-            gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="track")
+            track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
+            with gr.Row():
+                gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
+                gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="track")
+        
         generate = gr.Button("Generate Music from Image")
 
         gr.HTML(article)
+    
     generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
     share_button.click(None, [], [], _js=share_js)
 
