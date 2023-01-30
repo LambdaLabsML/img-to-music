@@ -175,16 +175,17 @@ with gr.Blocks(css="style.css") as demo:
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
         music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
-        track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
-        with gr.Row():
-            gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
-            gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="track")
-        generate = gr.Button("Generate Music from Image")
         
         with gr.Group(elem_id="share-btn-container"):
             community_icon = gr.HTML(community_icon_html, visible=False)
             loading_icon = gr.HTML(loading_icon_html, visible=False)
             share_button = gr.Button("Share to community", elem_id="share-btn", visible=False)
+        
+        track_duration = gr.Slider(minimum=20, maximum=120, value=30, step=5, label="Track duration", elem_id="duration-inp")
+        with gr.Row():
+            gen_intensity = gr.Dropdown(choices=["low", "medium", "high"], value="medium", label="Intensity")
+            gen_mode = gr.Radio(label="mode", choices=["track", "loop"], value="track")
+        generate = gr.Button("Generate Music from Image")
 
         gr.HTML(article)
     generate.click(get_prompts, inputs=[input_img,track_duration,gen_intensity,gen_mode], outputs=[music_output, share_button, community_icon, loading_icon], api_name="i2m")
