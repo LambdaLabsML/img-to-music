@@ -88,57 +88,6 @@ def convert_mp3_to_wav(mp3_filepath):
   
   return wave_file
 
-css = """
-#col-container {max-width: 580px; margin-left: auto; margin-right: auto;}
-a {text-decoration-line: underline; font-weight: 600;}
-.footer {
-        margin-bottom: 45px;
-        margin-top: 10px;
-        text-align: center;
-        border-bottom: 1px solid #e5e5e5;
-    }
-    .footer>p {
-        font-size: .8rem;
-        display: inline-block;
-        padding: 0 10px;
-        transform: translateY(10px);
-        background: white;
-    }
-    .dark .footer {
-        border-color: #303030;
-    }
-    .dark .footer>p {
-        background: #0b0f19;
-    }
-.animate-spin {
-    animation: spin 1s linear infinite;
-}
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-#share-btn-container {
-    display: flex; padding-left: 0.5rem !important; padding-right: 0.5rem !important; background-color: #000000; justify-content: center; align-items: center; border-radius: 9999px !important; width: 13rem;
-}
-#share-btn {
-    all: initial; color: #ffffff;font-weight: 600; cursor:pointer; font-family: 'IBM Plex Sans', sans-serif; margin-left: 0.5rem !important; padding-top: 0.25rem !important; padding-bottom: 0.25rem !important;right:0;
-}
-#share-btn * {
-    all: unset;
-}
-#share-btn-container div:nth-child(-n+2){
-    width: auto !important;
-    min-height: 0px !important;
-}
-#share-btn-container .wrap {
-    display: none !important;
-}
-"""
-
 article = """
     
     <div class="footer">
@@ -174,7 +123,7 @@ with gr.Blocks(css="style.css") as demo:
     
     
         input_img = gr.Image(type="filepath", elem_id="input-img")
-        music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output")
+        music_output = gr.Audio(label="Result", type="filepath", elem_id="music-output").style(height="5rem")
         
         with gr.Group(elem_id="share-btn-container"):
             community_icon = gr.HTML(community_icon_html, visible=False)
