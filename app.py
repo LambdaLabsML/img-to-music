@@ -97,12 +97,17 @@ article = """
         </p>
     </div>
     
-    <div id="may-like-container" style="display: flex;justify-content: center;flex-direction: column;align-items: center;">
+    <div id="may-like-container" style="display: flex;justify-content: center;flex-direction: column;align-items: center;margin-bottom: 30px;">
         <p style="font-size: 0.8em;margin-bottom: 4px;">You may also like: </p>
-        <div id="may-like" style="display:flex; align-items:center; justify-content: center;height:20px;">
-            <svg height="20" width="120" style="margin-left:4px">       
+        <div id="may-like" style="display: flex;flex-wrap: wrap;align-items: center;height: 20px;">
+            <svg height="20" width="122" style="margin-left:4px;margin-bottom: 6px;">       
                  <a href="https://huggingface.co/spaces/fffiloni/spectrogram-to-music" target="_blank">
                     <image href="https://img.shields.io/badge/🤗 Spaces-Riffusion-blue" src="https://img.shields.io/badge/🤗 Spaces-Riffusion-blue.png" height="20"/>
+                 </a>
+            </svg>
+            <svg height="20" width="192" style="margin-left:4px;margin-bottom: 6px;">       
+                 <a href="https://huggingface.co/spaces/Mubert/Text-to-Music" target="_blank">
+                    <image href="https://img.shields.io/badge/🤗 Spaces-Mubert_Text_to_Music-blue" src="https://img.shields.io/badge/🤗 Spaces-Mubert_Text_to_Music-blue.png" height="20"/>
                  </a>
             </svg>
         </div>
