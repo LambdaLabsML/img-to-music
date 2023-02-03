@@ -4,7 +4,7 @@ emoji: 🌅🎶
 colorFrom: green
 colorTo: purple
 sdk: gradio
-sdk_version: 3.17.1
+sdk_version: 3.16.0
 app_file: app.py
 pinned: true
 ---
